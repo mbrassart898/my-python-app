@@ -3,16 +3,16 @@ pipeline {
 
     environment {
         PYTHON_ENV = 'venv'  // Virtual environment name
-        AZURE_CREDENTIALS = credentials('azure-service-principal') // Jenkins credentials ID for Azure Service Principal
-        AZURE_APP_NAME = 'your-app-name'  // Name of your Azure Web App
-        AZURE_RESOURCE_GROUP = 'your-resource-group'  // Name of your Azure Resource Group
-        AZURE_LOCATION = 'your-location'  // Location of your Azure resources
+        AZURE_CREDENTIALS = credentials('jenkins-service-principal') // Jenkins credentials ID for Azure Service Principal
+        AZURE_APP_NAME = 'app.py'  // Name of your Azure Web App
+        AZURE_RESOURCE_GROUP = 'jenkins_test'  // Name of your Azure Resource Group
+        AZURE_LOCATION = 'East US'  // Location of your Azure resources
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repository-url.git'
+                git 'https://github.com/mbrassart898/my-python-app'
             }
         }
 
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        az login --service-principal -u ${AZURE_CREDENTIALS_USR} -p ${AZURE_CREDENTIALS_PSW} --tenant ${AZURE_CREDENTIALS_TEN}
+                        az login --service-principal -u $mikebrassart@gmail.com -p $VAg8Q~n5geP_BgBbAWTI9F.pUUXc6GV0ny0xAcL- --tenant $6e360dff-1d95-4b19-9f75-c368c059e950
                     '''
                     sh '''
                         source ${PYTHON_ENV}/bin/activate
