@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        az login --service-principal -u $mikebrassart@gmail.com -p $VAg8Q~n5geP_BgBbAWTI9F.pUUXc6GV0ny0xAcL- --tenant $6e360dff-1d95-4b19-9f75-c368c059e950
+                        az login --service-principal -u ${AZURE_CREDENTIALS_USR} -p ${AZURE_CREDENTIALS_PSW} --tenant ${AZURE_CREDENTIALS_TEN}
                     '''
                     sh '''
                         source ${PYTHON_ENV}/bin/activate
@@ -58,7 +58,7 @@ pipeline {
 
     post {
         always {
-            script {
+            node {
                 cleanWs()
             }
         }
