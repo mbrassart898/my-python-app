@@ -12,26 +12,32 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/mbrassart898/my-python-app'
+                script {
+                    git 'https://github.com/mbrassart898/my-python-app'
+                }
             }
         }
 
         stage('Setup') {
             steps {
-                sh '''
-                    python3 -m venv ${PYTHON_ENV}
-                    source ${PYTHON_ENV}/bin/activate
-                    pip install -r requirements.txt
-                '''
+                script {
+                    sh '''
+                        python3 -m venv ${PYTHON_ENV}
+                        source ${PYTHON_ENV}/bin/activate
+                        pip install -r requirements.txt
+                    '''
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh '''
-                    source ${PYTHON_ENV}/bin/activate
-                    pytest tests/
-                '''
+                script {
+                    sh '''
+                        source ${PYTHON_ENV}/bin/activate
+                        pytest tests/
+                    '''
+                }
             }
         }
 
@@ -58,7 +64,7 @@ pipeline {
 
     post {
         always {
-            node {
+            script {
                 cleanWs()
             }
         }
