@@ -1,4 +1,4 @@
-pipeline  {
+pipeline {
     agent any
 
     environment {
@@ -37,7 +37,7 @@ pipeline  {
 
         stage('Deploy') {
             when {
-                branch 'main'
+                branch 'master'
                 expression {
                     return currentBuild.result == null || currentBuild.result == 'SUCCESS'
                 }
@@ -58,7 +58,9 @@ pipeline  {
 
     post {
         always {
-            cleanWs()
+            script {
+                cleanWs()
+            }
         }
     }
 }
