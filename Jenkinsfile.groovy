@@ -19,17 +19,14 @@ pipeline {
         stage('Setup') {
             steps {
                 // Debugging: Print the PATH environment variable
-                powershell 'echo $env:PATH'
-                
-                // Debugging: Verify cmd is accessible
-                powershell 'Get-Command cmd'
+                bat 'echo %PATH%'
                 
                 // Normal setup steps
-                powershell '''
+                bat '''
                     python --version
                     pip --version
                     python -m venv venv
-                    .\\venv\\Scripts\\Activate.ps1
+                    call venv\\Scripts\\activate
                     pip install -r requirements.txt
                 '''
             }
@@ -37,8 +34,8 @@ pipeline {
 
         stage('Test') {
             steps {
-                powershell '''
-                    .\\venv\\Scripts\\Activate.ps1
+                bat '''
+                    call venv\\Scripts\\activate
                     pytest tests/
                 '''
             }
@@ -70,14 +67,14 @@ pipeline {
                         -p ${AZURE_CREDENTIALS_PSW} \
                         --tenant ${AZURE_CREDENTIALS_TEN}
                     """
-                    powershell loginCommand
+                    bat loginCommand
 
                     // Verify Azure login success
-                    powershell 'az account show'
+                    bat 'az account show'
 
                     // Activate virtual environment and run deployment script
-                    powershell '''
-                        .\\venv\\Scripts\\Activate.ps1
+                    bat '''
+                        call venv\\Scripts\\activate
                         ./deploy.sh
                     '''
                 }
