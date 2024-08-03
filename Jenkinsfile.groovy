@@ -7,7 +7,7 @@ pipeline {
         AZURE_APP_NAME = 'app.py'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
         AZURE_LOCATION = 'East US'
-        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'  // Tenant ID added here
+        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'
         PYTHONPATH = "."
     }
 
@@ -73,7 +73,7 @@ pipeline {
                 bat '''
                     az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                     call venv\\Scripts\\activate
-                    ./deploy.sh
+                    bash deploy.sh
                 '''
             }
         }
