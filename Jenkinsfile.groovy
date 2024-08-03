@@ -14,7 +14,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
+                ])
                 script {
                     def branchName = powershell(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                     env.BRANCH_NAME = branchName
