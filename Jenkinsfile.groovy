@@ -103,6 +103,12 @@ pipeline {
                         call deploy.bat
                     ''', returnStatus: true)
                     if (deployStatus != 0) {
+                        echo 'Checking logs for more details...'
+                        bat '''
+                            type check_webapp.log
+                            type create_webapp.log
+                            type deploy.log
+                        '''
                         error("Deployment failed with exit code ${deployStatus}")
                     } else {
                         echo 'Deployment script executed successfully'
