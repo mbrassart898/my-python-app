@@ -83,11 +83,12 @@ pipeline {
                         echo Starting Azure deployment
                         az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                         call venv\\Scripts\\activate
+                        echo Executing deploy.bat
                         deploy.bat
                         echo Azure deployment finished with exit code %ERRORLEVEL%
                         exit %ERRORLEVEL%
                     ''', returnStatus: true)
-                    
+
                     if (deploymentStatus != 0) {
                         error("Deployment failed with exit code ${deploymentStatus}")
                     }
