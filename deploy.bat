@@ -9,6 +9,7 @@ if %ERRORLEVEL% NEQ 0 (
     az webapp create --name your-azure-app-url --resource-group jenkins_test --plan myAppServicePlan >create_webapp.log 2>&1
     if %ERRORLEVEL% NEQ 0 (
         echo Failed to create the web app. Check create_webapp.log for details.
+        type create_webapp.log
         exit /b %ERRORLEVEL%
     )
 )
@@ -18,6 +19,7 @@ az webapp up --name your-azure-app-url --runtime "PYTHON|3.9" >deploy.log 2>&1
 
 if %ERRORLEVEL% NEQ 0 (
     echo Deployment failed with exit code %ERRORLEVEL%. Check deploy.log for details.
+    type deploy.log
     exit /b %ERRORLEVEL%
 ) else (
     echo Deployment complete.
