@@ -7,26 +7,30 @@ pipeline {
         AZURE_APP_NAME = 'app.py'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
         AZURE_LOCATION = 'East US'
-        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'  // Tenant ID added here
+        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'
         PYTHONPATH = "."
     }
 
     stages {
-        stage('Environment Diagnostics') {
+        stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/master']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [],
-                    userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
-                ])
+                checkout scm
+                script {
+                    env.BRANCH_NAME = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                }
             }
         }
 
-        stage('Checkout') {
+        stage('Environment Diagnostics') {
             steps {
-                git 'https://github.com/mbrassart898/my-python-app'
+                bat '''
+                    echo PATH=%PATH%
+                    where cmd
+                    python --version
+                    pip --version
+                    az --version
+                    powershell -Command "Write-Output PowerShell command is working!"
+                '''
             }
         }
 
@@ -56,16 +60,14 @@ pipeline {
                     echo "Current Branch: ${env.BRANCH_NAME}"
                     echo "Current Build Result: ${currentBuild.result}"
                 }
-            }    
+            }
         }
 
         stage('Deploy') {
             when {
                 allOf {
-                    expression { env.GIT_BRANCH ==~ /(origin\/)?master/ }
-                    expression {
-                        return currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                    }
+                    expression { env.BRANCH_NAME ==~ /(origin\/)?master/ }
+                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                 }
             }
             steps {
