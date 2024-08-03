@@ -16,7 +16,8 @@ pipeline {
             steps {
                 checkout scm
                 script {
-                    env.BRANCH_NAME = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    def branchName = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    env.BRANCH_NAME = branchName
                 }
             }
         }
@@ -66,7 +67,7 @@ pipeline {
         stage('Deploy') {
             when {
                 allOf {
-                    expression { env.BRANCH_NAME ==~ /(origin\/)?master/ }
+                    expression { env.BRANCH_NAME ==~ /master/ }
                     expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                 }
             }
