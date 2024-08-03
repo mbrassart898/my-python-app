@@ -14,15 +14,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/master']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [],
-                    userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
-                ])
                 script {
-                    def branchName = powershell(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    def branchName = 'master'
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: branchName]],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [],
+                        userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
+                    ])
                     env.BRANCH_NAME = branchName
                 }
             }
@@ -73,7 +73,7 @@ pipeline {
         stage('Deploy') {
             when {
                 allOf {
-                    expression { env.BRANCH_NAME ==~ /master/ }
+                    expression { env.BRANCH_NAME == 'master' }
                     expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                 }
             }
