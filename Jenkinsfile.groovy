@@ -16,7 +16,7 @@ pipeline {
             steps {
                 checkout scm
                 script {
-                    def branchName = bat(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    def branchName = powershell(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
                     env.BRANCH_NAME = branchName
                 }
             }
