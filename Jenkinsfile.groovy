@@ -82,6 +82,7 @@ pipeline {
                     def deploymentStatus = bat(script: '''
                         echo Starting Azure deployment
                         az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
+                        echo Calling venv
                         call venv\\Scripts\\activate
                         echo Executing deploy.bat
                         deploy.bat
