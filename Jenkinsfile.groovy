@@ -79,19 +79,33 @@ pipeline {
             }
             steps {
                 script {
-                    def deploymentStatus = bat(script: '''
-                        echo Starting Azure deployment
+                    echo 'Starting Azure login...'
+                    def loginStatus = bat(script: '''
                         az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
-                        echo Calling venv
-                        call venv\\Scripts\\activate
-                        echo Executing deploy.bat
-                        deploy.bat
-                        echo Azure deployment finished with exit code %ERRORLEVEL%
-                        exit %ERRORLEVEL%
                     ''', returnStatus: true)
+                    if (loginStatus != 0) {
+                        error("Azure login failed with exit code ${loginStatus}")
+                    } else {
+                        echo 'Azure login successful'
+                    }
 
-                    if (deploymentStatus != 0) {
-                        error("Deployment failed with exit code ${deploymentStatus}")
+                    echo 'Activating virtual environment...'
+                    def venvStatus = bat(script: '''
+                        call venv\\Scripts\\activate
+                        echo Virtual environment activated
+                    ''', returnStatus: true)
+                    if (venvStatus != 0) {
+                        error("Virtual environment activation failed with exit code ${venvStatus}")
+                    }
+
+                    echo 'Executing deploy.bat...'
+                    def deployStatus = bat(script: '''
+                        call deploy.bat
+                    ''', returnStatus: true)
+                    if (deployStatus != 0) {
+                        error("Deployment failed with exit code ${deployStatus}")
+                    } else {
+                        echo 'Deployment script executed successfully'
                     }
                 }
             }
