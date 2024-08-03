@@ -7,20 +7,20 @@ pipeline {
         AZURE_APP_NAME = 'app.py'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
         AZURE_LOCATION = 'East US'
-        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'
+        AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'  // Tenant ID added here
         PYTHONPATH = "."
     }
 
     stages {
         stage('Environment Diagnostics') {
             steps {
-                echo 'Starting environment diagnostics...'
-                bat 'echo %PATH%'
-                bat 'where cmd'
-                bat 'python --version'
-                bat 'pip --version'
-                bat 'az --version'
-                bat 'powershell -Command "Write-Output PowerShell command is working!"'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
+                ])
             }
         }
 
@@ -53,17 +53,16 @@ pipeline {
         stage('Debug Info') {
             steps {
                 script {
-                    env.BRANCH_NAME = env.GIT_BRANCH ?: 'master'
+                    echo "Current Branch: ${env.BRANCH_NAME}"
+                    echo "Current Build Result: ${currentBuild.result}"
                 }
-                echo "Current Branch: ${env.BRANCH_NAME}"
-                echo "Current Build Result: ${currentBuild.result}"
-            }
+            }    
         }
 
         stage('Deploy') {
             when {
                 allOf {
-                    branch 'master'
+                    expression { env.GIT_BRANCH ==~ /(origin\/)?master/ }
                     expression {
                         return currentBuild.result == null || currentBuild.result == 'SUCCESS'
                     }
@@ -73,7 +72,7 @@ pipeline {
                 bat '''
                     az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                     call venv\\Scripts\\activate
-                    bash deploy.sh
+                    call deploy.bat
                 '''
             }
         }
