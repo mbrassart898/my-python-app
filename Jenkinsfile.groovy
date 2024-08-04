@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         PATH = "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\System32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Bitvise SSH Client;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin;C:\\Windows\\System32;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;C:\\Users\\michel\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\New Relic\\New Relic CLI\\;C:\\Users\\michel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin"
-        AZURE_CREDENTIALS = credentials('jenkins-service-principal')
+        AZURE_CREDENTIALS = credentials('50734d15-045b-42ec-a91e-5674d6fcdb5c')
         AZURE_APP_NAME = 'your-azure-app-url'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
         AZURE_LOCATION = 'East US'
