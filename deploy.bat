@@ -8,6 +8,14 @@ set LOCATION=EastUS
 set RUNTIME="PYTHON|3.11"
 set OS_TYPE=linux  REM Set to 'linux' for Linux app service plan
 
+REM Print the variables
+echo RESOURCE_GROUP=%RESOURCE_GROUP%
+echo PLAN_NAME=%PLAN_NAME%
+echo WEBAPP_NAME=%WEBAPP_NAME%
+echo LOCATION=%LOCATION%
+echo RUNTIME=%RUNTIME%
+echo OS_TYPE=%OS_TYPE%
+
 REM Check if the resource group exists
 echo Checking if the resource group exists...
 az group show --name %RESOURCE_GROUP% > check_resource_group.log 2>&1
