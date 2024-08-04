@@ -18,6 +18,8 @@ if %ERRORLEVEL% NEQ 0 (
         type create_resource_group.log
         exit /b %ERRORLEVEL%
     )
+) else (
+    echo Resource group exists.
 )
 
 REM Check if the app service plan exists
@@ -31,6 +33,8 @@ if %ERRORLEVEL% NEQ 0 (
         type create_plan.log
         exit /b %ERRORLEVEL%
     )
+) else (
+    echo App service plan exists.
 )
 
 REM Check if the web app exists
@@ -44,6 +48,8 @@ if %ERRORLEVEL% NEQ 0 (
         type create_webapp.log
         exit /b %ERRORLEVEL%
     )
+) else (
+    echo Web app exists.
 )
 
 REM Deploy the application
