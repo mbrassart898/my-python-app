@@ -6,6 +6,7 @@ set PLAN_NAME=myAppServicePlan
 set WEBAPP_NAME=mb-app
 set LOCATION=EastUS
 set RUNTIME="PYTHON|3.11"
+set OS_TYPE=linux  REM Set to 'linux' for Linux app service plan
 
 REM Check if the resource group exists
 echo Checking if the resource group exists...
@@ -20,6 +21,7 @@ if %ERRORLEVEL% NEQ 0 (
     )
 ) else (
     echo Resource group exists.
+    type check_resource_group.log
 )
 
 REM Check if the app service plan exists
@@ -27,7 +29,7 @@ echo Checking if the app service plan exists...
 az appservice plan show --name %PLAN_NAME% --resource-group %RESOURCE_GROUP% > check_plan.log 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo App service plan does not exist. Creating the app service plan...
-    az appservice plan create --name %PLAN_NAME% --resource-group %RESOURCE_GROUP% --sku B1 > create_plan.log 2>&1
+    az appservice plan create --name %PLAN_NAME% --resource-group %RESOURCE_GROUP% --sku B1 --is-linux > create_plan.log 2>&1
     if %ERRORLEVEL% NEQ 0 (
         echo Failed to create the app service plan. Check create_plan.log for details.
         type create_plan.log
@@ -35,6 +37,7 @@ if %ERRORLEVEL% NEQ 0 (
     )
 ) else (
     echo App service plan exists.
+    type check_plan.log
 )
 
 REM Check if the web app exists
@@ -50,6 +53,7 @@ if %ERRORLEVEL% NEQ 0 (
     )
 ) else (
     echo Web app exists.
+    type check_webapp.log
 )
 
 REM Deploy the application

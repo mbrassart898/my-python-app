@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        PATH = "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\System32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Bitvise SSH Client;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin;C:\\Windows\\System32;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;C:\\Users\\michel\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\New Relic\\New Relic CLI\\;C:\\Users\\michel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin"
         AZURE_CREDENTIALS = credentials('service-principal')
         AZURE_APP_NAME = 'mb-app'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
@@ -14,17 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    def branchName = 'master'
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: branchName]],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [],
-                        userRemoteConfigs: [[url: 'https://github.com/mbrassart898/my-python-app']]
-                    ])
-                    env.BRANCH_NAME = branchName
-                }
+                checkout scm
             }
         }
 
@@ -61,22 +50,7 @@ pipeline {
             }
         }
 
-        stage('Debug Info') {
-            steps {
-                script {
-                    echo "Current Branch: ${env.BRANCH_NAME}"
-                    echo "Current Build Result: ${currentBuild.result}"
-                }
-            }
-        }
-
         stage('Deploy') {
-            when {
-                allOf {
-                    expression { env.BRANCH_NAME == 'master' }
-                    expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-                }
-            }
             steps {
                 script {
                     echo 'Starting Azure login...'
@@ -87,15 +61,6 @@ pipeline {
                         error("Azure login failed with exit code ${loginStatus}")
                     } else {
                         echo 'Azure login successful'
-                    }
-
-                    echo 'Activating virtual environment...'
-                    def venvStatus = bat(script: '''
-                        call venv\\Scripts\\activate
-                        echo Virtual environment activated
-                    ''', returnStatus: true)
-                    if (venvStatus != 0) {
-                        error("Virtual environment activation failed with exit code ${venvStatus}")
                     }
 
                     echo 'Executing deploy.bat...'
@@ -124,13 +89,7 @@ pipeline {
 
     post {
         always {
-            script {
-                try {
-                    cleanWs()
-                } catch (Exception e) {
-                    echo "Error during workspace cleanup: ${e}"
-                }
-            }
+            cleanWs()
         }
     }
 }
