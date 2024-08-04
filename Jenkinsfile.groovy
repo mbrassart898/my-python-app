@@ -81,7 +81,7 @@ pipeline {
                 script {
                     echo 'Starting Azure login...'
                     def loginStatus = bat(script: '''
-                        az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
+                        az login --jenkins-service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                     ''', returnStatus: true)
                     if (loginStatus != 0) {
                         error("Azure login failed with exit code ${loginStatus}")
