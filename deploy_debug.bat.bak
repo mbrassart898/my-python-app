@@ -11,7 +11,6 @@ az --version
 powershell -Command "Write-Output PowerShell command is working!"
 
 :: Activate virtual environment
-echo "Activate virtual environment"
 call venv\Scripts\activate
 
 :: Deploy to Azure
