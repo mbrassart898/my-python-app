@@ -105,6 +105,10 @@ pipeline {
                     if (deployStatus != 0) {
                         echo 'Checking logs for more details...'
                         bat '''
+                            type check_resource_group.log
+                            type create_resource_group.log
+                            type check_plan.log
+                            type create_plan.log
                             type check_webapp.log
                             type create_webapp.log
                             type deploy.log
