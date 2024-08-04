@@ -81,6 +81,7 @@ pipeline {
                 script {
                     echo 'Starting Azure login...'
                     def loginStatus = bat(script: '''
+                        az account set --name 8fa3958d-d38d-4e9b-83b1-1c0e3d8fe693
                         az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                     ''', returnStatus: true)
                     if (loginStatus != 0) {
