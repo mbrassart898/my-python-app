@@ -5,13 +5,14 @@ REM Set variables
 set AZURE_APP_NAME=mb-app
 set AZURE_RESOURCE_GROUP=jenkins_test
 set AZURE_PLAN_NAME=myAppServicePlan
+set AZURE_LOCATION=EastUS
 
 REM Check if the web app exists
 echo Checking if the web app exists...
 az webapp show --name %AZURE_APP_NAME% --resource-group %AZURE_RESOURCE_GROUP% >check_webapp.log 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo The web app '%AZURE_APP_NAME%' does not exist. Creating the web app...
-    az group create --name %AZURE_RESOURCE_GROUP% --location "East US" >create_group.log 2>&1
+    az group create --name %AZURE_RESOURCE_GROUP% --location %AZURE_LOCATION% >create_group.log 2>&1
     az appservice plan create --name %AZURE_PLAN_NAME% --resource-group %AZURE_RESOURCE_GROUP% --sku B1 >create_plan.log 2>&1
     az webapp create --name %AZURE_APP_NAME% --resource-group %AZURE_RESOURCE_GROUP% --plan %AZURE_PLAN_NAME% >create_webapp.log 2>&1
     if %ERRORLEVEL% NEQ 0 (

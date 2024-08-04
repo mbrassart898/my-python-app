@@ -1,3 +1,0 @@
-ERROR: (InvalidDoubleEncodedRequestUri) The request URI 'https://management.azure.com:443/subscriptions/8fa3958d-d38d-4e9b-83b1-1c0e3d8fe693/resourcegroups/%25AZURE_RESOURCE_GROUP%25?api-version=2022-09-01' is not valid, because it contains double encoding sequence '%25'.
-Code: InvalidDoubleEncodedRequestUri
-Message: The request URI 'https://management.azure.com:443/subscriptions/8fa3958d-d38d-4e9b-83b1-1c0e3d8fe693/resourcegroups/%25AZURE_RESOURCE_GROUP%25?api-version=2022-09-01' is not valid, because it contains double encoding sequence '%25'.
