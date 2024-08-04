@@ -4,7 +4,7 @@ pipeline {
     environment {
         PATH = "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\System32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Bitvise SSH Client;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin;C:\\Windows\\System32;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe;C:\\Users\\michel\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\New Relic\\New Relic CLI\\;C:\\Users\\michel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin"
         AZURE_CREDENTIALS = credentials('service-principal')
-        AZURE_APP_NAME = 'your-azure-app-url'
+        AZURE_APP_NAME = 'https://app.azurewebsites.net'
         AZURE_RESOURCE_GROUP = 'jenkins_test'
         AZURE_LOCATION = 'East US'
         AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'
@@ -81,7 +81,7 @@ pipeline {
                 script {
                     echo 'Starting Azure login...'
                     def loginStatus = bat(script: '''
-                        az login --jenkins-service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
+                        az login --service-principal -u %AZURE_CREDENTIALS_USR% -p %AZURE_CREDENTIALS_PSW% --tenant %AZURE_TENANT%
                     ''', returnStatus: true)
                     if (loginStatus != 0) {
                         error("Azure login failed with exit code ${loginStatus}")
