@@ -5,7 +5,7 @@ set RESOURCE_GROUP=jenkins_test
 set PLAN_NAME=myAppServicePlan
 set WEBAPP_NAME=mb-app
 set LOCATION=EastUS
-set RUNTIME=PYTHON|3.9
+
 
 REM Check if the resource group exists
 echo Checking if the resource group exists...
