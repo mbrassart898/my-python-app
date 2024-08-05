@@ -4,7 +4,7 @@ $RESOURCE_GROUP = "mbcicd"
 $PLAN_NAME = "mb-service-plan"
 $WEBAPP_NAME = "mb-app"
 $LOCATION = "South Central US"
-$RUNTIME = "PYTHON|3.11"
+$RUNTIME = "PYTHON 3.11"
 $OS_TYPE = "linux"
 
 Write-Output "Resource group: $RESOURCE_GROUP"
