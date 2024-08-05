@@ -13,10 +13,16 @@ set OS_TYPE=linux
 echo Deploying the web app...
 
 REM Use timeout to wait for 5 seconds
-timeout /t 5 /nobreak
+REM timeout /t 5 /nobreak
 
+REM Deploy the app
 az webapp up --name %WEBAPP_NAME% --resource-group %RESOURCE_GROUP% --runtime %RUNTIME%
 
-
-echo Deployment completed successfully.
-exit /b 0
+REM Check if the deployment was successful
+if %ERRORLEVEL% NEQ 0 (
+    echo Deployment failed with exit code %ERRORLEVEL%.
+    exit /b %ERRORLEVEL%
+) else (
+    echo Deployment completed successfully.
+    exit /b 0
+)
