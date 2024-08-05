@@ -1,5 +1,16 @@
-# This is s test app for deployment
-def add(a, b):
-    return a + b
+# mb-app.py
 
-print("Hello, Bonjour")
+def main():
+    print("Starting the application...")
+
+    # Your application logic here
+    print("Running the application...")
+
+    # Simulate some computation or process
+    result = 42
+    print(f"Computation result: {result}")
+
+    print("Ending the application.")
+
+if __name__ == "__main__":
+    main()
