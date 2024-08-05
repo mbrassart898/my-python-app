@@ -36,13 +36,19 @@ if ($servicePlanExists) {
 
 
 # Check if the web app exist
-$webAppExists = (az webapp show --name 'mb-app' --resource-group 'mbcicd' --query "name" -o tsv) -ne ''
-if ($webAppExists) {
-    Write-Output "*** Web app exists."
-} else {
+try {
+    $webAppName = az webapp show --name 'mb-app' --resource-group 'mbcicd' --query "name" -o tsv
+    if ($webAppName) {
+        Write-Output "*** Web app exists."
+    } else {
+        Write-Output "*** Web app does not exist."
+        # Create the web app if it doesn't exist
+        # az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --runtime 'PYTHON|3.11'
+    }
+} catch {
     Write-Output "*** Web app does not exist."
     # Create the web app if it doesn't exist
-    # az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --os-type $OS_TYPE
+    # az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --runtime 'PYTHON|3.11'
 }
 
 Write-Output "Deploying the web app..."
