@@ -7,12 +7,18 @@ $RUNTIME = "PYTHON|3.11"
 $OS_TYPE = "linux"
 
 Write-Host "Deploying the web app..."
-$deploy = az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME 2>&1
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Deployment failed with exit code $LASTEXITCODE. Check details below:"
-    Write-Host $deploy
-    exit $LASTEXITCODE
-} else {
-    Write-Host "Deployment completed successfully."
-    exit 0
+try {
+    $deploy = az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Deployment failed with exit code $LASTEXITCODE. Check details below:"
+        Write-Host $deploy
+        exit $LASTEXITCODE
+    } else {
+        Write-Host "Deployment completed successfully."
+        exit 0
+    }
+} catch {
+    Write-Host "An error occurred during deployment. Check details below:"
+    Write-Host $_.Exception.Message
+    exit 1
 }
