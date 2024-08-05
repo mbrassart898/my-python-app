@@ -38,6 +38,7 @@ try {
 }
 
 # Check if the web app exists
+az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --location $LOCATION
 try {
     $webAppName = az webapp show --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --query "name" -o tsv
     if ($webAppName) {
