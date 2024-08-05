@@ -15,7 +15,7 @@ Write-Output "Runtime: $RUNTIME"
 Write-Output "OS type: $OS_TYPE"
 
 Write-Output "Deploying the web app..."
-az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME
+az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME --os-type $OS_TYPE
 
 if ($LASTEXITCODE -ne 0) {
     Write-Output "Deployment failed with exit code $LASTEXITCODE."
