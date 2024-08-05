@@ -65,7 +65,7 @@ pipeline {
                     }
 
                     echo 'Executing deploy.ps1...'
-                    def deployStatus = powershell(script: 'deploy.ps1', returnStatus: true)
+                    def deployStatus = powershell(script: '${workspace}\\deploy.ps1', returnStatus: true)
                     if (deployStatus != 0) {
                         echo 'Deployment failed with exit code ${deployStatus}'
                         error("Deployment failed with exit code ${deployStatus}")
