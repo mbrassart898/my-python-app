@@ -64,21 +64,10 @@ pipeline {
                         echo 'Azure login successful'
                     }
 
-                    echo 'Executing deploy.bat...'
-                    def deployStatus = bat(script: '''
-                        call deploy.bat
-                    ''', returnStatus: true)
+                    echo 'Executing deploy.ps1...'
+                    def deployStatus = powershell(script: 'deploy.ps1', returnStatus: true)
                     if (deployStatus != 0) {
-                        echo 'Checking logs for more details...'
-                        bat '''
-                            type check_resource_group.log
-                            type create_resource_group.log
-                            type check_plan.log
-                            type create_plan.log
-                            type check_webapp.log
-                            type create_webapp.log
-                            type deploy.log
-                        '''
+                        echo 'Deployment failed with exit code ${deployStatus}'
                         error("Deployment failed with exit code ${deployStatus}")
                     } else {
                         echo 'Deployment script executed successfully'
@@ -90,13 +79,7 @@ pipeline {
 
     post {
         always {
-            script {
-                try {
-                    cleanWs()
-                } catch (Exception e) {
-                    echo "Error during workspace cleanup: ${e}"
-                }
-            }
+            cleanWs()
         }
     }
 }
