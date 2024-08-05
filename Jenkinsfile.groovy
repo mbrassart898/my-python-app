@@ -65,9 +65,10 @@ pipeline {
                     }
 
                     echo 'Executing deploy.ps1...'
-                    def deployStatus = powershell(returnStatus: true, script: '''
-                        ${env.WORKSPACE}\\deploy.ps1
-                    ''')
+                    def deployStatus = powershell(returnStatus: true, script: """
+                        Write-Output 'Running deploy.ps1 from Jenkins...'
+                        & '${env.WORKSPACE}\\deploy.ps1'
+                    """)
                     if (deployStatus != 0) {
                         echo 'Deployment failed with exit code ${deployStatus}'
                         error("Deployment failed with exit code ${deployStatus}")
