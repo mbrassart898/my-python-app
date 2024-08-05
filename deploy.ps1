@@ -38,7 +38,8 @@ try {
 }
 
 # Check if the web app exists
-az webapp create --resource-group "mbcicd" --plan "mb-service-plan" --name "mb-app"
+# az webapp create --resource-group "mbcicd" --plan "mb-service-plan" --name "mb-app"
+az webapp create --resource-group "mbcicd" --plan "mb-service-plan" --name "mb-app" --runtime $runtime
 
 Write-Output "******** Created mb-app."
 
