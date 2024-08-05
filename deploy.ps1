@@ -21,7 +21,7 @@ az group create --name $RESOURCE_GROUP --location "$LOCATION"
 az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --sku B1 --is-linux
 
 # Create the web app if it doesn't exist
-az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME
+az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --os-type $OS_TYPE
 
 Write-Output "Deploying the web app..."
 az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME --os-type $OS_TYPE
