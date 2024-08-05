@@ -4,7 +4,7 @@ $RESOURCE_GROUP = "mbcicd"
 $PLAN_NAME = "mb-service-plan"
 $WEBAPP_NAME = "mb-app"
 $LOCATION = "South Central US"
-$RUNTIME = "PYTHON|3.11"
+$RUNTIME = "PYTHON:3.11"
 $OS_TYPE = "linux"
 
 Write-Output "Resource group: $RESOURCE_GROUP"
@@ -30,13 +30,20 @@ if ($servicePlanExists) {
     Write-Output "*** Service plan exists."
 } else {
     Write-Output "*** Service plan does not exist."
+    # Create the app service plan if it doesn't exist
+    # az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --sku B1 --is-linux
 }
 
-# Create the app service plan if it doesn't exist
-# az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --sku B1 --is-linux
 
-# Create the web app if it doesn't exist
-az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --os-type $OS_TYPE
+# Check if the web app exist
+$webAppExists = (az webapp show --name 'mb-app' --resource-group 'mbcicd' --query "name" -o tsv) -ne ''
+if ($webAppExists) {
+    Write-Output "*** Web app exists."
+} else {
+    Write-Output "*** Web app does not exist."
+    # Create the web app if it doesn't exist
+    # az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --os-type $OS_TYPE
+}
 
 Write-Output "Deploying the web app..."
 az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME --os-type $OS_TYPE
