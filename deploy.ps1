@@ -43,17 +43,17 @@ try {
     } else {
         Write-Output "*** Web app does not exist."
         # Create the web app if it doesn't exist
-        # az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --runtime 'PYTHON|3.11'
+        az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --location "$LOCATION" --runtime 'PYTHON:3.11' 
     }
 } catch {
     Write-Output "*** Web app does not exist."
     # Create the web app if it doesn't exist
-    az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --runtime 'PYTHON:3.11' --location $LOCATION
+    az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --location "$LOCATION" --runtime 'PYTHON:3.11' 
     Write-Output "*** Created Web app."
 }
 
 Write-Output "Deploying the web app..."
-az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --runtime $RUNTIME --os-type $OS_TYPE
+az webapp up --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --runtime $RUNTIME --os-type $OS_TYPE
 
 if ($LASTEXITCODE -ne 0) {
     Write-Output "Deployment failed with exit code $LASTEXITCODE."
