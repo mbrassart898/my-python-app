@@ -66,22 +66,8 @@ pipeline {
 
                     echo 'Executing deploy.ps1...'
                     def deployStatus = powershell(returnStatus: true, script: '''
-                        D:\\Projects\my-python-app>\deploy.ps1
+                        ${env.WORKSPACE}\\deploy.ps1
                     ''')
                     if (deployStatus != 0) {
                         echo 'Deployment failed with exit code ${deployStatus}'
-                        error("Deployment failed with exit code ${deployStatus}")
-                    } else {
-                        echo 'Deployment script executed successfully'
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
-        }
-    }
-}
+                        error("Deployment failed with
