@@ -11,6 +11,10 @@ set OS_TYPE=linux
 
 
 echo Deploying the web app...
+
+REM Use timeout to wait for 5 seconds
+timeout /t 5 /nobreak
+
 az webapp up --name %WEBAPP_NAME% --resource-group %RESOURCE_GROUP% --runtime %RUNTIME%
 
 
