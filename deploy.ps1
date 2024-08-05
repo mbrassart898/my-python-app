@@ -48,7 +48,7 @@ try {
 } catch {
     Write-Output "*** Web app does not exist."
     # Create the web app if it doesn't exist
-    az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --location "$LOCATION" --runtime 'PYTHON:3.11' 
+    az webapp create --name 'mb-app' --resource-group 'mbcicd' --plan 'mb-service-plan' --runtime 'PYTHON:3.11' 
     Write-Output "*** Created Web app."
 }
 
