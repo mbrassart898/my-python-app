@@ -14,6 +14,15 @@ Write-Output "Location: $LOCATION"
 Write-Output "Runtime: $RUNTIME"
 Write-Output "OS type: $OS_TYPE"
 
+# Check if the resource group exist
+$resourceGroupExists = (az group exists --name 'mbcicd') -eq 'true'
+if ($resourceGroupExists) {
+    Write-Output "Resource group exists."
+} else {
+    Write-Output "Resource group does not exist."
+}
+
+
 # Create the resource group if it doesn't exist
 az group create --name $RESOURCE_GROUP --location "$LOCATION"
 
