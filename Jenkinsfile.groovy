@@ -5,8 +5,8 @@ pipeline {
         PATH = "C:\\Windows\\System32;C:\\Windows;C:\\Program Files\\Common Files\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Bitvise SSH Client;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git\\bin;C:\\Users\\michel\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\New Relic\\New Relic CLI\\;C:\\Users\\michel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin"
         AZURE_CREDENTIALS = credentials('service-principal')
         AZURE_APP_NAME = 'mb-app'
-        AZURE_RESOURCE_GROUP = 'jenkins_test'
-        AZURE_LOCATION = 'East US'
+        AZURE_RESOURCE_GROUP = 'mbcicd'
+        AZURE_LOCATION = 'South Central US'
         AZURE_TENANT = '6e360dff-1d95-4b19-9f75-c368c059e950'
         PYTHONPATH = "."
     }
@@ -90,7 +90,13 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            script {
+                try {
+                    cleanWs()
+                } catch (Exception e) {
+                    echo "Error during workspace cleanup: ${e}"
+                }
+            }
         }
     }
 }
