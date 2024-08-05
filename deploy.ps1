@@ -17,17 +17,23 @@ Write-Output "OS type: $OS_TYPE"
 # Check if the resource group exist
 $resourceGroupExists = (az group exists --name 'mbcicd') -eq 'true'
 if ($resourceGroupExists) {
-    Write-Output "Resource group exists."
+    Write-Output "*** Resource group exists."
 } else {
-    Write-Output "Resource group does not exist."
+    Write-Output "*** Resource group does not exist."
+    # Creating the resource group
+    #az group create --name $RESOURCE_GROUP --location "$LOCATION"
 }
 
-
-# Create the resource group if it doesn't exist
-az group create --name $RESOURCE_GROUP --location "$LOCATION"
+# Check if the service plan exist
+$servicePlanExists = (az appservice plan show --name 'mb-service-plan' --resource-group 'mbcicd' --query "name" -o tsv) -ne ''
+if ($servicePlanExists) {
+    Write-Output "*** Service plan exists."
+} else {
+    Write-Output "*** Service plan does not exist."
+}
 
 # Create the app service plan if it doesn't exist
-az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --sku B1 --is-linux
+# az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --location "$LOCATION" --sku B1 --is-linux
 
 # Create the web app if it doesn't exist
 az webapp create --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime $RUNTIME --os-type $OS_TYPE
